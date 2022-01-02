@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/abc.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="upper">
+        <Label>Enter Total Number of Names For which you want to generate certificates</Label>
+        <input style="margin:0px 15px" id="totalnames" type="number">
+        <button onclick="addhtml(event)">Submit</button>
+    </div>
+    <br><div class="lower">
+    <div class="hide" id="main">
+    <div id="names">
+    </div>
+    <br>
+    <button onclick="func(event)" type="submit">Submit Names</button>
+    <br>
+    <br>
+    <form action="/files/" method="post">
+        {% csrf_token %}
+        <input id="asd" value="abcdefd" name="name" type="hidden">
+        <button id="generate" class="hide gen" type="submit">Generate Certificates</button>
+    </form>
+</div>
+</div>
+</body>
+<script>
+    var inputs = document.createElement('input')
+    inputs.type = "text";
+    inputs.className = 'example';
+    function func(e) {
+        e.preventDefault();
+        var x, i;
+        var anm = []
+        x = document.querySelectorAll(".example");
+        for (i = 0; i < x.length; i++) {
+            if(x[i].value.length >=3){
+            anm.push(x[i].value);
+            }
+        }
+        document.getElementById("asd").value = anm;
+        document.getElementById("generate").classList.remove('hide');
+    }
+    function addhtml(e) {
+        e.preventDefault();
+        var as = document.getElementById("totalnames").value;
+        var dsw = document.getElementById("names");
+        for (let i = 0; i < as; i++) {
+            dsw.innerHTML += `
+            <input class="example" type="text">
+            <br>
+            <br>
+
+            `
+        }
+        document.getElementById("main").classList.remove('hide');
+
+    }
+
+
+</script>
+
+</html>
