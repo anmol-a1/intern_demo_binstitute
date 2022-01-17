@@ -16,17 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from sample import views
-from django.urls import path,include
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import re_path
-from django.views.static import serve
+from django.urls import path
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index),
-    path('files/',views.anmol),
-    re_path(r'^download/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-if settings.DEBUG:
-    urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
-    urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    path('home/',views.loginuser)
+]
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('',views.index),
+#     path('files/',views.anmol),
+#     path('login/',views.loginuser),
+#     re_path(r'^download/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
+# ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+#     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

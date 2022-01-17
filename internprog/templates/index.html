@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Text Over Image with CSS and JavaScript</title>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet"
+        type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <style>
+        * {
+            margin: 0px;
+        }
+
+        .mainContainer {
+            position: relative;
+            padding: 0;
+            min-width: 250px;
+            min-height: 250px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        img {
+            border: none;
+            max-width: 100%;
+        }
+
+        /* #textArea {
+        display: block;
+        padding: 10px 5px;
+      }
+      #textArea1 {
+        display: block;
+        padding: 10px 5px;
+      } */
+        .textareamain {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-top: 5px;
+        }
+
+        #theText1,
+        #theText2,
+        #theText3,
+        #theText4 {
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: auto;
+            padding: 4px;
+            text-align: left;
+            border: dashed 2px #ff7f27;
+            font-size: 18px;
+            font-family: Arial, Helvetica, sans-serif;
+            display: block;
+            cursor: touchmove;
+            white-space: pre-wrap;
+            color: black;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!--File upload-->
+    <div style="width:100vw;margin:0px auto;background-color: aqua;text-align: center;min-height: 100vh;">
+        <p style="margin: 0px">
+            <input type="submit" id="btChooseImage" onclick="chooseImage()" value="Select an image"
+                style="margin: 8px auto;" />
+        </p>
+        <input type="file" id="file" onchange="showImage(this)" style="display: none; visibility: hidden; width: 1px" />
+        <div style="display: flex;align-items: center;flex-direction: column;">
+            <!--The parent container, image and container for text (to place over the image)-->
+            <div class="mainContainer" id="mainContainer">
+                <!--The default image. You can select a different image too.-->
+                <img src="https://www.encodedna.com/images/theme/easy-image-resizer.jpg" id="myimage" alt="" />
+
+                <!--The text, which is also draggable.-->
+                <div id="theText1" class="draggable" onmousedown='this.style.border = "dashed 2px #FF7F27";'>
+                    sample text 1
+                </div>
+                <div id="theText2" class="draggable" onmousedown='this.style.border = "dashed 2px #FF7F27";'>
+                    sample text 2
+                </div>
+                <div id="theText3" class="draggable" onmousedown='this.style.border = "dashed 2px #FF7F27";'>
+                    sample text 3
+                </div>
+                <div id="theText4" class="draggable" onmousedown='this.style.border = "dashed 2px #FF7F27";'>
+                    sample text 4
+                </div>
+            </div>
+
+            <!--Button to save the image with the text.-->
+            <p>
+                <input type="button" onclick="saveImageWithText();" id="bt" value="Save the Image" />
+            </p>
+        </div>
+
+        <div class="textareamain">
+            <p>
+                <textarea onkeyup="writeText1(this)" style="text-align: left;" id="textArea1" placeholder="Enter some value for text" rows="1" class="textareasdiv" cols="40"></textarea>
+            </p>
+            <input onchange="fcolor(event)" type="color" name="fcolor1" id="fcolor1">
+            <div>
+                <label for="cars">Enter a Font Size:</label>
+                <input type="number" onchange="fsize(event)" name="fsize1" id="fsize1">
+                </select>
+            </div>
+            <div>
+                <label>Choose a Font:</label>
+                <select onchange="font(event)" name="font1" id="font1">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Brush Script MT">Brush Script MT</option>
+                </select>
+            </div>
+        </div>
+        <div class="textareamain">
+            <p>
+                <textarea onkeyup="writeText2(this)" id="textArea2" placeholder="Enter some value for text" rows="1"
+                    class="textareasdiv" cols="40">
+              </textarea>
+            </p>
+            <input type="color" onchange="fcolor(event)" name="fcolor2" id="fcolor2">
+            <div>
+                <label>Enter a Font Size:</label>
+                <input type="number" onchange="fsize(event)" name="fsize2" id="fsize2">
+                </select>
+
+            </div>
+            <div>
+                <label>Choose a Font:</label>
+                <select onchange="font(event)" name="font2" id="font2">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Brush Script MT">Brush Script MT</option>
+                </select>
+            </div>
+        </div>
+        <div class="textareamain">
+            <p>
+                <textarea onkeyup="writeText3(this)" id="textArea3" placeholder="Enter some value for text" rows="1"
+                    class="textareasdiv" cols="40">
+              </textarea>
+            </p>
+            <input type="color" onchange="fcolor(event)" name="fcolor3" id="fcolor3">
+            <div>
+                <label>Enter a Font Size:</label>
+                <input type="number" onchange="fsize(event)" name="fsize3" id="fsize3">
+                </select>
+
+            </div>
+            <div>
+                <label>Choose a Font:</label>
+                <select onchange="font(event)" name="font3" id="font3">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Brush Script MT">Brush Script MT</option>
+                </select>
+            </div>
+        </div>
+        <div class="textareamain">
+            <p>
+                <textarea onkeyup="writeText4(this)" id="textArea4" placeholder="Enter some value for text" rows="1"
+                    class="textareasdiv" cols="40">
+              </textarea>
+            </p>
+            <input type="color" onchange="fcolor(event)" name="fcolor4" id="fcolor4">
+            <div>
+                <label>Enter a Font Size:</label>
+                <input type="number" onchange="fsize(event)" name="fsize4" id="fsize4">
+                </select>
+            </div>
+            <div>
+                <label>Choose a Font:</label>
+                <select onchange="font(event)" name="font4" id="font4">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Brush Script MT">Brush Script MT</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</body>
+<!--THE SCRIPT SECTION.-->
+<script>
+    var datalist = JSON.parse("{{li|escapejs}}");
+    // Make the text element draggable.
+    document.getElementById("theText1").style.color = "black";
+    document.getElementById("theText1").style.fontSize = "18px";
+    document.getElementById("theText2").style.color = "black";
+    document.getElementById("theText2").style.fontSize = "18px";
+    document.getElementById("theText3").style.color = "black";
+    document.getElementById("theText3").style.fontSize = "18px";
+    document.getElementById("theText4").style.color = "black";
+    document.getElementById("theText4").style.fontSize = "18px";
+    function fcolor(event) {
+        let id = (event.target.id)[6];
+        document.getElementById("theText" + id).style.color = event.target.value;
+    }
+    function fsize(event) {
+        let id = (event.target.id)[5];
+        document.getElementById("theText" + id).style.fontSize = `${event.target.value}px`;
+    }
+    function font(event) {
+        let id = (event.target.id)[4];
+        console.log(event.target.value);
+        document.getElementById("theText" + id).style.fontFamily = event.target.value;
+    }
+    $(document).ready(function () {
+        $(function () {
+            $(".draggable").draggable({
+                containment: "parent", // set draggable area. Ref: https://www.encodedna.com/jquery/limit-the-draggable-area-using-jquery-ui.htm
+            });
+        });
+    });
+    // Select image and show it.
+    let chooseImage = () => {
+        document.getElementById("file").click();
+    };
+    let showImage = (fl) => {
+        if (fl.files.length > 0) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                let img = new Image();
+                img.onload = function () {
+                    console.log(screen.height, screen.width);
+                    console.log(this.width, this.height);
+                    if (this.width > screen.width || this.height > screen.height) {
+                        alert(
+                            "Please select a small image. The image width and height should be less than the screen width and height."
+                        );
+
+                        document.getElementById("theText1").style.display = "none";
+                        document.getElementById("bt").style.display = "none";
+                        document.getElementById("textArea1").style.display = "none";
+                        document.getElementById("theText2").style.display = "none";
+                        document.getElementById("textArea3").style.display = "none";
+                        document.getElementById("theText3").style.display = "none";
+                        document.getElementById("textArea4").style.display = "none";
+                        document.getElementById("theText4").style.display = "none";
+                        document.getElementById("textArea2").style.display = "none";
+                        document.getElementById("myimage").src = "";
+                    } else {
+                        document.getElementById("theText1").style.display = "block";
+                        document.getElementById("bt").style.display = "block";
+                        document.getElementById("textArea1").style.display = "block";
+                        document.getElementById("theText2").style.display = "block";
+                        document.getElementById("textArea3").style.display = "block";
+                        document.getElementById("theText3").style.display = "block";
+                        document.getElementById("textArea4").style.display = "block";
+                        document.getElementById("theText4").style.display = "block";
+                        document.getElementById("textArea2").style.display = "block";
+                    }
+                };
+
+                img.src = e.target.result; // actual image.
+                document.getElementById("myimage").src = reader.result; // Add the image on the form.
+            };
+            reader.readAsDataURL(fl.files[0]);
+        }
+    };
+
+    let textContainer1;
+    let textContainer2;
+    let textContainer3;
+    let textContainer4;
+    let t1 = "";
+    let t2 = "";
+    let t3 = "";
+    let t4 = "";
+
+    // Get the values that you have entered in the textarea and
+    // write it in the DIV over the image.
+
+    let writeText1 = (ele) => {
+        t1 = ele.value;
+        document.getElementById("theText1").innerHTML = t1.replace(
+            /\n\r?/g,
+            "<br />"
+        );
+    };
+
+    let writeText2 = (ele) => {
+        t2 = ele.value;
+        document.getElementById("theText2").innerHTML = t2.replace(
+            /\n\r?/g,
+            "<br />"
+        );
+    };
+    let writeText3 = (ele) => {
+        t3 = ele.value;
+        document.getElementById("theText3").innerHTML = t3.replace(
+            /\n\r?/g,
+            "<br />"
+        );
+    };
+    let writeText4 = (ele) => {
+        t4 = ele.value;
+        document.getElementById("theText4").innerHTML = t4.replace(
+            /\n\r?/g,
+            "<br />"
+        );
+    };
+    console.log(screen.height);
+    console.log(screen.width);
+    window.onload = function () {
+        var box1 = document.getElementById('theText1');
+        var box2 = document.getElementById('theText2');
+        var box3 = document.getElementById('theText3');
+        var box4 = document.getElementById('theText4');
+        box1.addEventListener('touchmove', function (e) {
+
+            var touchLocation = e.targetTouches[0];
+            box1.style.left = touchLocation.pageX + 'px';
+            box1.style.top = touchLocation.pageY + 'px';
+        })
+        box2.addEventListener('touchmove', function (e) {
+
+            var touchLocation = e.targetTouches[0];
+            box2.style.left = touchLocation.pageX + 'px';
+            box2.style.top = touchLocation.pageY + 'px';
+        })
+        box3.addEventListener('touchmove', function (e) {
+
+            var touchLocation = e.targetTouches[0];
+            box3.style.left = touchLocation.pageX + 'px';
+            box3.style.top = touchLocation.pageY + 'px';
+        })
+        box4.addEventListener('touchmove', function (e) {
+
+            var touchLocation = e.targetTouches[0];
+            box4.style.left = touchLocation.pageX + 'px';
+            box4.style.top = touchLocation.pageY + 'px';
+        })
+
+    }
+
+    // Finally, save the image with text over it.
+    let saveImageWithText = () => {
+        textContainer1 = document.getElementById("theText1"); // The element with the text.
+        console.log(textContainer1.style);
+        textContainer2 = document.getElementById("theText2"); // The element with the text.
+        textContainer3 = document.getElementById("theText3"); // The element with the text.
+        textContainer4 = document.getElementById("theText4"); // The element with the text.
+        console.log(textContainer1.style.fontSize);
+        // Draw the image on the canvas.
+        let drawImage = () => {
+            const ol =[...datalist] 
+
+            for (let ibc = 0; ibc < ol.length; ibc++) {
+                // Draw the image.
+                let img = new Image();
+                img.src = document.getElementById("myimage").src;
+                img.onload = function () {
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d"); // Create canvas context.
+
+
+                    // Assign width and height.
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    textContainer1.style.border = 0;
+
+                    // Get the padding etc.
+                    let left = parseInt(window.getComputedStyle(textContainer1).left);
+                    console.log(left);
+                    let right = textContainer1.getBoundingClientRect().right;
+                    console.log(right);
+                    let top = parseInt(window.getComputedStyle(textContainer1).top, 0);
+                    console.log(top);
+                    let center = textContainer1.getBoundingClientRect().width / 2;
+                    console.log(center);
+
+
+                    let paddingTop = window
+                        .getComputedStyle(textContainer1)
+                        .paddingTop.replace("px", "");
+                    console.log(paddingTop);
+                    let paddingLeft = window
+                        .getComputedStyle(textContainer1)
+                        .paddingLeft.replace("px", "");
+                    console.log(paddingLeft);
+                    let paddingRight = window
+                        .getComputedStyle(textContainer1)
+                        .paddingRight.replace("px", "");
+                    console.log(paddingRight);
+
+
+                    // Get text alignement, colour and font of the text.
+                    let txtAlign = window.getComputedStyle(textContainer1).textAlign;
+                    console.log(txtAlign);
+                    let color = window.getComputedStyle(textContainer1).color;
+                    console.log(color);
+                    let fnt = window.getComputedStyle(textContainer1).font;
+
+                    // Assign text properties to the context.
+                    ctx.font = fnt;
+                    ctx.fillStyle = color;
+                    ctx.textAlign = txtAlign;
+                    let paddtops = parseInt((textContainer1.style.fontSize).slice(0, 2));
+                    console.log("fontsize is", paddtops);
+                    // Now, we need the coordinates of the text.
+                    let x; // coordinate.
+                    if (txtAlign === "right") {
+                        x = right + parseInt(paddingRight) - 11;
+                        console.log(x, "i am right")
+                    }
+                    if (txtAlign === "left") {
+                        x = left + parseInt(paddingLeft);
+                        console.log(x, "i am left");
+                    }
+                    if (txtAlign === "center") {
+                        x = center + left;
+                        console.log(x, " i am at center");
+                    }
+                    // Get the text (it can a word or a sentence) to write over the image.
+                    let str1 = ol[ibc].replace(/\n\r?/g, "<br />").split("<br />");
+                    //  let str = t;
+                    console.log(str1);
+                    // finally, draw the text using Canvas fillText() method.
+                    for (let i = 0; i <= str1.length - 1; i++) {
+                        ctx.fillText(
+                            // ol[ibc][i],
+                            // x,
+                            str1[i].replace("</div>", "").replace("<br>", "").replace(";", ""),
+                            x,
+                            parseInt(paddingTop, 10) + parseInt(top, 10) + paddtops + i * 15
+                        );
+
+                    }
+
+                    textContainer2.style.border = 0;
+                    let left1 = parseInt(window.getComputedStyle(textContainer2).left);
+                    console.log(left1);
+                    let right1 = textContainer2.getBoundingClientRect().right;
+                    let top1 = parseInt(window.getComputedStyle(textContainer2).top, 0);
+                    let center1 = textContainer2.getBoundingClientRect().width / 2;
+                    let txtAlign1 = window.getComputedStyle(textContainer2).textAlign;
+                    let color1 = window.getComputedStyle(textContainer2).color;
+                    let fnt1 = window.getComputedStyle(textContainer2).font;
+                    let paddingTop1 = window
+                        .getComputedStyle(textContainer2)
+                        .paddingTop.replace("px", "");
+                    let paddingLeft1 = window
+                        .getComputedStyle(textContainer2)
+                        .paddingLeft.replace("px", "");
+                    let paddingRight1 = window
+                        .getComputedStyle(textContainer2)
+                        .paddingRight.replace("px", "");
+                    ctx.fillStyle = color1;
+                    ctx.font = fnt1;
+                    paddtops = parseInt((textContainer2.style.fontSize).slice(0, 2));
+                    ctx.textAlign = txtAlign1;
+                    let str2 = t2.replace(/\n\r?/g, "<br />").split("<br />");
+                    let x2; // coordinate.
+                    if (txtAlign1 === "right") {
+                        x2 = right1 + parseInt(paddingRight1) - 11;
+                    }
+                    if (txtAlign1 === "left") {
+                        x2 = left1 + parseInt(paddingLeft1);
+                    }
+                    if (txtAlign1 === "center") {
+                        x2 = center + left1;
+                    }
+                    for (let i = 0; i <= str1.length - 1; i++) {
+                        ctx.fillText(
+                            str2[i].replace("</div>", "").replace("<br>", "").replace(";", ""),
+                            x2,
+                            parseInt(paddingTop1, 10) + parseInt(top1, 10) + paddtops + i * 15
+                        );
+                    }
+                    textContainer3.style.border = 0;
+                    left1 = parseInt(window.getComputedStyle(textContainer3).left);
+                    console.log(left1);
+                    right1 = textContainer3.getBoundingClientRect().right;
+                    top1 = parseInt(window.getComputedStyle(textContainer3).top, 0);
+                    center1 = textContainer3.getBoundingClientRect().width / 2;
+                    txtAlign1 = window.getComputedStyle(textContainer3).textAlign;
+                    color1 = window.getComputedStyle(textContainer3).color;
+                    console.log(color1);
+                    fnt1 = window.getComputedStyle(textContainer3).font;
+                    paddtops = parseInt((textContainer3.style.fontSize).slice(0, 2));
+                    paddingTop1 = window
+                        .getComputedStyle(textContainer3)
+                        .paddingTop.replace("px", "");
+                    paddingLeft1 = window
+                        .getComputedStyle(textContainer3)
+                        .paddingLeft.replace("px", "");
+                    paddingRight1 = window
+                        .getComputedStyle(textContainer3)
+                        .paddingRight.replace("px", "");
+                    ctx.fillStyle = color1;
+                    ctx.font = fnt1;
+                    ctx.textAlign = txtAlign1;
+                    let str3 = t3.replace(/\n\r?/g, "<br />").split("<br />");
+                    x2; // coordinate.
+                    if (txtAlign1 === "right") {
+                        x2 = right1 + parseInt(paddingRight1) - 11;
+                    }
+                    if (txtAlign1 === "left") {
+                        x2 = left1 + parseInt(paddingLeft1);
+                    }
+                    if (txtAlign1 === "center") {
+                        x2 = center + left1;
+                    }
+                    for (let i = 0; i <= str3.length - 1; i++) {
+                        ctx.fillText(
+                            str3[i].replace("</div>", "").replace("<br>", "").replace(";", ""),
+                            x2,
+                            parseInt(paddingTop1, 10) + parseInt(top1, 10) + paddtops + i * 15
+                        );
+                    }
+                    textContainer4.style.border = 0;
+                    left1 = parseInt(window.getComputedStyle(textContainer4).left);
+                    cright1 = textContainer4.getBoundingClientRect().right;
+                    top1 = parseInt(window.getComputedStyle(textContainer4).top, 0);
+                    center1 = textContainer4.getBoundingClientRect().width / 2;
+                    txtAlign1 = window.getComputedStyle(textContainer4).textAlign;
+                    color1 = window.getComputedStyle(textContainer4).color;
+                    console.log(color1);
+                    fnt1 = window.getComputedStyle(textContainer4).font;
+                    paddingTop1 = window
+                        .getComputedStyle(textContainer4)
+                        .paddingTop.replace("px", "");
+                    paddingLeft1 = window
+                        .getComputedStyle(textContainer4)
+                        .paddingLeft.replace("px", "");
+                    paddingRight1 = window
+                        .getComputedStyle(textContainer4)
+                        .paddingRight.replace("px", "");
+                    ctx.fillStyle = color1;
+                    ctx.font = fnt1;
+                    ctx.textAlign = txtAlign1;
+                    paddtops = parseInt((textContainer4.style.fontSize).slice(0, 2));
+                    let str4 = t4.replace(/\n\r?/g, "<br />").split("<br />");
+                    x2; // coordinate.
+                    if (txtAlign1 === "right") {
+                        x2 = right1 + parseInt(paddingRight1) - 11;
+                    }
+                    if (txtAlign1 === "left") {
+                        x2 = left1 + parseInt(paddingLeft1);
+                    }
+                    if (txtAlign1 === "center") {
+                        x2 = center + left1;
+                    }
+                    for (let i = 0; i <= str4.length - 1; i++) {
+                        ctx.fillText(
+                            str4[i].replace("</div>", "").replace("<br>", "").replace(";", ""),
+                            x2,
+                            parseInt(paddingTop1, 10) + parseInt(top1, 10) + paddtops + i * 15
+                        );
+                    }
+                    let downloadImage = () => {
+                        let a = document.createElement("a");
+                        a.href = canvas.toDataURL("image/png");
+                        a.download = ol[ibc];
+                        document.body.appendChild(a);
+                        a.click();
+                    };
+                    downloadImage();
+                };
+            }
+            // document.body.append(canvas);  // Show the image with the text on the Canvas.
+
+
+
+
+            // Download the processed image.
+
+        };
+        drawImage();
+    };
+</script>
+
+</html>
