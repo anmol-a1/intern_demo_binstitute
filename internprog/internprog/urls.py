@@ -21,6 +21,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index),
+    path('csvupload/',views.upload_csv),
     path('home/',views.loginuser)
 ]
 # urlpatterns = [

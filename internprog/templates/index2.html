@@ -12,12 +12,6 @@
         * {
             margin: 0px;
         }
-        .hid{
-        visibility: hidden;
-}
-        .vis{
-        visibility:visible
-}
 
         .mainContainer {
             position: relative;
@@ -81,33 +75,12 @@
                 style="margin: 8px auto;" />
         </p>
         <input type="file" id="file" onchange="showImage(this)" style="display: none; visibility: hidden; width: 1px" />
-        <label style="margin-right: 15px;" for="">Select Names From</label>
-        <label style="margin-right: 10px;">
-            <input  type="radio" checked="true" name="editList" value="always" />Database
-        </label>
-        <label style="margin-right: 10px;">
-            <input accept=".csv"   type="radio" onclick="toggless()" name="editList" value="never" />CSV FILE
-        </label >
-        <form id="csvs" action="/csvupload/" class="hid" method="POST"  style="display:inline-block;margin-right: 10px;margin-bottom: 10px;padding-bottom: 2px;" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div style="display:inline-block;">
-                <div style="display:inline-block;">
-                    <input type="file" name="csv_file" id="csv_file">
-                </div>
-
-            </div>
-            
-                
-             <button style="display:inline-block;margin-left: 10px;" type="submit">Upload </button>
-                
-            
-        </form>
+        <p style="display: inline-block;">Names Are Selected From CSV File</p>
         <div style="display: flex;align-items: center;flex-direction: column;">
             <!--The parent container, image and container for text (to place over the image)-->
             <div class="mainContainer" id="mainContainer">
                 <!--The default image. You can select a different image too.-->
-                <img src="https://www.encodedna.com/images/theme/easy-image-resizer.jpg" height="500px" width="750px"
-                    id="myimage" alt="" />
+                <img src="https://www.encodedna.com/images/theme/easy-image-resizer.jpg" height="500px" width="750px" id="myimage" alt="" />
 
                 <!--The text, which is also draggable.-->
                 <div id="theText1" class="draggable" onmousedown='this.style.border = "dashed 2px #FF7F27";'>
@@ -132,8 +105,7 @@
 
         <div class="textareamain">
             <p>
-                <textarea onkeyup="writeText1(this)" style="text-align: left;" id="textArea1"
-                    placeholder="Enter some value for text" rows="1" class="textareasdiv" cols="40"></textarea>
+                <textarea onkeyup="writeText1(this)" style="text-align: left;" id="textArea1" placeholder="Enter some value for text" rows="1" class="textareasdiv" cols="40"></textarea>
             </p>
             <input onchange="fcolor(event)" type="color" name="fcolor1" id="fcolor1">
             <div>
@@ -162,7 +134,7 @@
             <input type="color" onchange="fcolor(event)" name="fcolor2" id="fcolor2">
             <div>
                 <label>Enter a Font Size:</label>
-                <input type="number" value="16" onchange="fsize(event)" name="fsize2" id="fsize2">
+                <input value="16" type="number" onchange="fsize(event)" name="fsize2" id="fsize2">
                 </select>
 
             </div>
@@ -187,7 +159,7 @@
             <input type="color" onchange="fcolor(event)" name="fcolor3" id="fcolor3">
             <div>
                 <label>Enter a Font Size:</label>
-                <input type="number" value="16" onchange="fsize(event)" name="fsize3" id="fsize3">
+                <input value="16" type="number" onchange="fsize(event)" name="fsize3" id="fsize3">
                 </select>
 
             </div>
@@ -212,7 +184,7 @@
             <input type="color" onchange="fcolor(event)" name="fcolor4" id="fcolor4">
             <div>
                 <label>Enter a Font Size:</label>
-                <input type="number" value="16" onchange="fsize(event)" name="fsize4" id="fsize4">
+                <input value="16" type="number" onchange="fsize(event)" name="fsize4" id="fsize4">
                 </select>
             </div>
             <div>
@@ -253,10 +225,6 @@
         let id = (event.target.id)[4];
         console.log(event.target.value);
         document.getElementById("theText" + id).style.fontFamily = event.target.value;
-    }
-    function toggless() {
-        var element = document.getElementById("csvs");
-        element.classList.toggle("hid");
     }
     $(document).ready(function () {
         $(function () {
@@ -398,7 +366,7 @@
         console.log(textContainer1.style.fontSize);
         // Draw the image on the canvas.
         let drawImage = () => {
-            const ol = [...datalist]
+            const ol =[...datalist] 
 
             for (let ibc = 0; ibc < ol.length; ibc++) {
                 // Draw the image.
